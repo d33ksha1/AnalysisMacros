@@ -5,7 +5,7 @@
 
 #include <string>
 
-void TrackEfficiency(TString infile=sim_path){
+void TrackEfficiency(TString infile){
   
   // Set output file for the histograms
   TFile *ofile = TFile::Open("TrackEfficiency.root","RECREATE");
@@ -404,7 +404,7 @@ TTreeReaderArray<int> parentIndices(tree_reader, "_MCParticles_parents.index");
   
   }// End loop over events
 
-  cout << "Number of charged Particles Outside the #eta range of the detector " << numberParticleOutsideEtaRange << endl;
+  cout << "Number of charged particles outside the eta range of the detector " << numberParticleOutsideEtaRange << endl;
   cout << "As a fraction of total charged particles: " << static_cast<double>(numberParticleOutsideEtaRange) / totalNumberOfChargedParticles << endl;
   // Take the ratio of the histograms above to get our efficiency plots
   TrackEff_Eta->Divide(matchedPartEta, partEta, 1, 1, "b");

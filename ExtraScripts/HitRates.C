@@ -34,10 +34,7 @@
 #include <vector>
 
 std::string input_file = "/data/cryoedm/users/pant/hybrid_svtob/epic/FinalBenchmarksNoCopper/SmallEPCollisions.edm4eic.root";
-//std::string input_file =  "/data/cryoedm/users/pant/copper_eic_hybrid/epic/FinalSimBenchmark/MuonsFullCraterlakeCutGDML.edm4eic.root";
 
-//std::string input_file = ""
-//std::string input_file = "root://hpceph-xrootd.twgrid.org:1094//cephfs/epic//RECO/26.07.1/epic_craterlake/Bkg_Exact1S_2us/GoldCt/10um/DIS/NC/10x275/minQ2=1000/pythia8NCDIS_10x275_minQ2=1000_beamEffects_xAngle=-0.025_hiDiv_1.0532.eicrecon.edm4eic.root";
 //SimHit collections
 std::vector<std::string> sim_coll_names{
 	"SiBarrelHits"

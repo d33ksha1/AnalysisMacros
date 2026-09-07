@@ -24,9 +24,8 @@
 #include <edm4eic/MCRecoParticleAssociationCollection.h>
 
 
-TString sim_path = "root://hpceph-xrootd.twgrid.org:1094//cephfs/epic//RECO/26.07.0/epic_craterlake/DIS/NC/10x100/minQ2=10/pythia8NCDIS_10x100_minQ2=10_beamEffects_xAngle=-0.025_hiDiv_5.07*.eicrecon.edm4eic.root";
 
-void MoreTrackingPlots(TString input_file = sim_path){
+void MoreTrackingPlots(TString input_file){
     podio::ROOTReader r;
 	r.openFile(input_file);
     auto nevents = r.getEntries(podio::Category::Event);

@@ -4,6 +4,9 @@ The folder **Efficiency Resolution** contains analysis on the efficiencies and t
 
 For the folder **StudyOfHits**, the path for the input .edm4eic.root file must be edited within the .C file. 
 
-Before running a script, use the following command to make the file executable
+Before running a script, use the following command to make the file executable:
+
+**chmod +x /path/to/file.C**
+
 All analysis scripts should be within the shell.
 

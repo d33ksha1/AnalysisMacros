@@ -1,15 +1,14 @@
-//Resolution of the momentum of the charged particles 
-//
+
+// Resolution of the momentum of the charged particles.
 
 #include <string>
 
-TString sim_path = "/data/cryoedm/users/pant/copper_eic_hybrid/epic/FinalSimBenchmark/EPCollisionsMuonGun.edm4eic.root.root";
 
-void ResolutionAnalysis(TString infile=sim_path){
+void ResolutionAnalysis(TString infile){
   // Set output file for the histograms
-  TFile *ofile = TFile::Open("ResolutionTesting.root","RECREATE");
+  TFile *ofile = TFile::Open("ResolutionAnalysis.root","RECREATE");
 
-  // Analysis code will go here
+    // Analysis code will go here
   // Set up input file chain
   TChain *mychain = new TChain("events");
   mychain->Add(infile);
@@ -23,17 +22,12 @@ void ResolutionAnalysis(TString infile=sim_path){
   TTreeReaderArray<double> partMomY(tree_reader, "MCParticles.momentum.y");
   TTreeReaderArray<double> partMomZ(tree_reader, "MCParticles.momentum.z");
   TTreeReaderArray<int> partPdg(tree_reader, "MCParticles.PDG");
-  TTreeReaderArray<double> partVertexX(tree_reader, "MCParticles.vertex.x");
-  TTreeReaderArray<double> partVertexY(tree_reader, "MCParticles.vertex.y");
-  TTreeReaderArray<double> partVertexZ(tree_reader, "MCParticles.vertex.z");
+
   // Get Reconstructed Track Information
   TTreeReaderArray<float> trackMomX(tree_reader, "ReconstructedChargedParticles.momentum.x");
   TTreeReaderArray<float> trackMomY(tree_reader, "ReconstructedChargedParticles.momentum.y");
   TTreeReaderArray<float> trackMomZ(tree_reader, "ReconstructedChargedParticles.momentum.z");
-  TTreeReaderArray<float> trackVertexX(tree_reader, "ReconstructedChargedParticles.referencePoint.x");
-  TTreeReaderArray<float> trackVertexY(tree_reader, "ReconstructedChargedParticles.referencePoint.y");
-  TTreeReaderArray<float> trackVertexZ(tree_reader, "ReconstructedChargedParticles.referencePoint.z");
-  // Get Associations Between MCParticles and ReconstructedChargedParticles
+  
   TTreeReaderArray<int> recoAssoc(tree_reader, "_ReconstructedChargedParticleAssociations_rec.index");
   TTreeReaderArray<int> simuAssoc(tree_reader, "_ReconstructedChargedParticleAssociations_sim.index");
     
@@ -44,7 +38,6 @@ void ResolutionAnalysis(TString infile=sim_path){
   trackMomResP->GetXaxis()->SetRangeUser(-1, 1);
   TH2D* trackMomResEta = new TH2D("trackMomResEta", "Track Momentum Resolution vs #eta; (P_{rec} - P_{MC})/P_{MC}; #eta_{MC}", 400, -1, 1, 120, -6, 6);
   trackMomResEta->GetXaxis()->SetRangeUser(-1, 1);
-	TH2D* trackResVertexX = new TH2D("trackResVertexX", "Track Vertex X Resolution vs #eta; (P_{rec} - P_{MC})/P_{MC}; #eta_{MC}", 400, -1, 1, 120, -6, 6);
   TH1D *trackMomentumRes_e = new TH1D("trackMomentumRes_e","e^{#pm} Track Momentum Resolution; (P_{rec} - P_{MC})/P_{MC}", 400, -2, 2);
   TH2D* trackMomResP_e = new TH2D("trackMomResP_e", "e^{#pm} Track Momentum Resolution vs P; (P_{rec} - P_{MC})/P_{MC}; P_{MC}(GeV/c)", 400, -2, 2, 150, 0, 25);
   TH2D* trackMomResEta_e = new TH2D("trackMomResEta_e", "e^{#pm} Track Momentum Resolution vs #eta; (P_{rec} - P_{MC})/P_{MC}; #eta_{MC}", 400, -2, 2, 120, -6, 6);
@@ -98,11 +91,6 @@ void ResolutionAnalysis(TString infile=sim_path){
 			float deltaPhi = TVector2::Phi_mpi_pi(truePhi - recMom.Phi());
 			float deltaR = TMath::Sqrt(deltaEta*deltaEta + deltaPhi*deltaPhi);
 			float deltaMom = ((trueMom.Mag()) - (recMom.Mag()));
-
-			float deltaPrimaryX = (partVertexX - trackVertexX);
-			float deltaPrimaryY = (partVertexY- trackVertexY);
-			float deltaPrimaryZ = (partVertexZ - trackVertexZ);
-
 			double momRes = (recMom.Mag() - trueMom.Mag())/trueMom.Mag();
 	
 			trackMomentumRes->Fill(momRes); // Could also multiply by 100 and express as a percentage instead

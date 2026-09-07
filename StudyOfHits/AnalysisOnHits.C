@@ -1,4 +1,5 @@
-//Script produces the 
+//Script produces hit maps for SimHits, RecHits and MeasurmentHits for hits which are used to reconstruct truth-matched particles
+//Also shows the hits which are missed by the reconstruction
 
 
 #include <podio/ObjectID.h>
@@ -17,7 +18,7 @@
 #include <TStyle.h>
 #include <TH1D.h>
 #include <TH2D.h>
-#include <TCanvas.h>x
+#include <TCanvas.h>
 #include <TLatex.h>
 #include <TLegend.h>
 #include <THStack.h>
@@ -30,9 +31,7 @@
 #include <unordered_map>
 #include <vector>
 
-
-
-TString input_file = "/data/cryoedm/users/pant/testing_hybrid/epic/FinalSimBenchmark/test.edm4eic.root";
+std::string input_file = "/data/cryoedm/users/pant/testing_hybrid/epic/FinalSimBenchmark/test.edm4eic.root";
 
 
 //SimHit collections
@@ -100,8 +99,7 @@ std::unordered_map<std::string, int> index_map;
 //-----------------
 
 // Main function
-void MissedMCParticles(TString input_file = input_file){
-    //Defining Histograms
+void AnalysisOnHits(){
 
     unsigned int numberTotalSimHits = 0;
     unsigned int numberSimHits = 0;
@@ -114,7 +112,7 @@ void MissedMCParticles(TString input_file = input_file){
     int numberTotalStableParticles = 0;
     int numberGhostParticles = 0;
 
-    TFile *ofile = TFile::Open("testing_hybrid/test.root","RECREATE");
+    TFile *ofile = TFile::Open("MissedMCParticles.root","RECREATE");
 
     TH1D *missedElectron = new TH1D("missedElectrons","MC Particles Not Reconstruced; P (GeV/c)", 50, 0, 25);
     TH1D *missedKaon = new TH1D("missedKaons","MC Particles Not Reconstruced; P (GeV/c)", 50, 0, 25);
