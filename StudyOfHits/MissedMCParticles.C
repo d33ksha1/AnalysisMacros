@@ -1,3 +1,6 @@
+//Script produces the 
+
+
 #include <podio/ObjectID.h>
 #include <podio/ROOTReader.h>
 #include <podio/Frame.h>
@@ -14,7 +17,7 @@
 #include <TStyle.h>
 #include <TH1D.h>
 #include <TH2D.h>
-#include <TCanvas.h>
+#include <TCanvas.h>x
 #include <TLatex.h>
 #include <TLegend.h>
 #include <THStack.h>
@@ -28,24 +31,19 @@
 #include <vector>
 
 
-//std::string input_file = "/data/cryoedm/users/pant/hybrid_svtob/epic/FinalBenchmarksNoCopper/SmallEPCollisions.edm4eic.root";
-//std::string input_file =  "/data/cryoedm/users/pant/hybrid_svtob/epic/FinalBenchmarksNoCopper/simMuFullTrackingRangeMomentumActual.edm4eic.root";
-//std::string input_file = "/data/cryoedm/users/pant/copper_eic/epic/FinalBenchmarks/simMuFullCraterlakeEpicMain.edm4eic.root";
-std::string input_file = "/data/cryoedm/users/pant/testing_hybrid/epic/FinalSimBenchmark/test.edm4eic.root";
-//std::string input_file = "/data/cryoedm/users/pant/hybrid_svtob/epic/FinalBenchmarksNoCopper/EPCollisionsFullCraterlakeCorrectedActual.edm4eic.root
-//std::string input_file = "//std::string input_file =  "/data/cryoedm/users/pant/copper_eic_hybrid/epic/FinalSimBenchmark/EPCollisions.edm4eic.root";
+
+TString input_file = "/data/cryoedm/users/pant/testing_hybrid/epic/FinalSimBenchmark/test.edm4eic.root";
+
 
 //SimHit collections
 std::vector<std::string> sim_coll_names{
 	"VertexBarrelHits", "SiBarrelHits", "TrackerEndcapHits",
-	"MPGDBarrelHits","BackwardMPGDEndcapHits","ForwardMPGDEndcapHits","OuterMPGDBarrelHits"
-};
+	"MPGDBarrelHits","BackwardMPGDEndcapHits","ForwardMPGDEndcapHits","OuterMPGDBarrelHits"};
 
 //TrackerHit RecHit (digitized) collections
 std::vector<std::string> rec_coll_names{
 	"SiBarrelVertexRecHits","SiBarrelTrackerRecHits", "SiEndcapTrackerRecHits",
-	"MPGDBarrelRecHits","BackwardMPGDEndcapRecHits","ForwardMPGDEndcapRecHits","OuterMPGDBarrelRecHits"
-};
+	"MPGDBarrelRecHits","BackwardMPGDEndcapRecHits","ForwardMPGDEndcapRecHits","OuterMPGDBarrelRecHits"};
 
 //Collection IDs for RecHit collections.
 std::vector<unsigned int> rec_coll_ids;
@@ -102,7 +100,7 @@ std::unordered_map<std::string, int> index_map;
 //-----------------
 
 // Main function
-void MissedMCParticles(){
+void MissedMCParticles(TString input_file = input_file){
     //Defining Histograms
 
     unsigned int numberTotalSimHits = 0;

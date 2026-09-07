@@ -1,13 +1,13 @@
-
+//Resolution of the momentum of the charged particles 
+//
 
 #include <string>
 
-//TString sim_path = "/data/cryoedm/users/pant/copper_eic_hybrid/epic/FinalSimBenchmark/EPCollisions.edm4eic.root";
 TString sim_path = "/data/cryoedm/users/pant/copper_eic_hybrid/epic/FinalSimBenchmark/EPCollisionsMuonGun.edm4eic.root.root";
 
 void ResolutionAnalysis(TString infile=sim_path){
   // Set output file for the histograms
-  TFile *ofile = TFile::Open("copper_eic_hybrid/ResolutionTesting.root","RECREATE");
+  TFile *ofile = TFile::Open("ResolutionTesting.root","RECREATE");
 
   // Analysis code will go here
   // Set up input file chain

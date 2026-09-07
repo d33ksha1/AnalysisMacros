@@ -1,36 +1,19 @@
 
 //Goal: track efficiency and resolution in C code. Need to change Tstring sim_path to be path of the eicrecon file
-// Track Efficiency is defined as which particles generated have been truth-matched (Associated)
-//https://eic.github.io/tutorial-analysis/03-analysis.html
+// Track Efficiency is defined as which particles generated have been truth-matched (Associated). Also takes only the charged partilces 
+// within the eta region of the detector (|eta| < 4)
 
 #include <string>
 
-//const std::vector<TString> inputFilesArray = {"root://hpceph-xrootd.twgrid.org:1094//cephfs/epic//RECO/26.07.1/epic_craterlake/Bkg_Exact1S_2us/GoldCt/10um/DIS/NC/10x100/minQ2=1/pythia8NCDIS_10x100_minQ2=1_beamEffects_xAngle=-0.025_hiDiv_1.0000.eicrecon.edm4eic.root",
-  //                      "root://hpceph-xrootd.twgrid.org:1094//cephfs/epic//RECO/26.07.1/epic_craterlake/Bkg_Exact1S_2us/GoldCt/10um/DIS/NC/10x100/minQ2=1/pythia8NCDIS_10x100_minQ2=1_beamEffects_xAngle=-0.025_hiDiv_1.0001.eicrecon.edm4eic.root",
-    //                  "root://hpceph-xrootd.twgrid.org:1094//cephfs/epic//RECO/26.07.1/epic_craterlake/Bkg_Exact1S_2us/GoldCt/10um/DIS/NC/10x100/minQ2=1/pythia8NCDIS_10x100_minQ2=1_beamEffects_xAngle=-0.025_hiDiv_1.0002.eicrecon.edm4eic.root",
-     //                   "root://hpceph-xrootd.twgrid.org:1094//cephfs/epic//RECO/26.07.1/epic_craterlake/Bkg_Exact1S_2us/GoldCt/10um/DIS/NC/10x100/minQ2=1/pythia8NCDIS_10x100_minQ2=1_beamEffects_xAngle=-0.025_hiDiv_1.0003.eicrecon.edm4eic.root",
-         //               "root://hpceph-xrootd.twgrid.org:1094//cephfs/epic//RECO/26.07.1/epic_craterlake/Bkg_Exact1S_2us/GoldCt/10um/DIS/NC/10x100/minQ2=1/pythia8NCDIS_10x100_minQ2=1_beamEffects_xAngle=-0.025_hiDiv_1.0005.eicrecon.edm4eic.root",
-           //             "root://hpceph-xrootd.twgrid.org:1094//cephfs/epic//RECO/26.07.1/epic_craterlake/Bkg_Exact1S_2us/GoldCt/10um/DIS/NC/10x100/minQ2=1/pythia8NCDIS_10x100_minQ2=1_beamEffects_xAngle=-0.025_hiDiv_1.0007.eicrecon.edm4eic.root",
-             //           "root://hpceph-xrootd.twgrid.org:1094//cephfs/epic//RECO/26.07.1/epic_craterlake/Bkg_Exact1S_2us/GoldCt/10um/DIS/NC/10x100/minQ2=1/pythia8NCDIS_10x100_minQ2=1_beamEffects_xAngle=-0.025_hiDiv_1.0008.eicrecon.edm4eic.root",
-               //         "root://hpceph-xrootd.twgrid.org:1094//cephfs/epic//RECO/26.07.1/epic_craterlake/Bkg_Exact1S_2us/GoldCt/10um/DIS/NC/10x100/minQ2=1/pythia8NCDIS_10x100_minQ2=1_beamEffects_xAngle=-0.025_hiDiv_1.0009.eicrecon.edm4eic.root"};
-
-
-
-
-//void TrackEfficiencyTChain(const std::vector<TString>& inputFiles = inputFilesArray){
-void TrackEfficiencyTChain(){
+void TrackEfficiency(TString infile=sim_path){
+  
   // Set output file for the histograms
-  TFile *ofile = TFile::Open("DatasetsFromCampaign/TrackEfficiencyDIS10x100q=10.root","RECREATE");
-
+  TFile *ofile = TFile::Open("TrackEfficiency.root","RECREATE");
+  cout <<"Graphs of efficiencies only consider the particles within the eta range of the detector" << endl;
   // Analysis code will go here
   // Set up input file chain
   TChain *mychain = new TChain("events");
-
-  //for (const TString& filename : inputFiles) {
-    //    int filesAdded = mychain->Add(filename);
-  //}
-  mychain->Add("root://hpceph-xrootd.twgrid.org:1094//cephfs/epic//RECO/26.07.0/epic_craterlake/DIS/NC/10x100/minQ2=10/pythia8NCDIS_10x100_minQ2=10_beamEffects_xAngle=-0.025_hiDiv_5.07*.eicrecon.edm4eic.root");
-  cout <<"Graphs of efficiencies only consider the particles within the eta range of the detector" << endl;
+  mychain->Add(infile);
 
   // Initialize reader
   TTreeReader tree_reader(mychain);
@@ -70,7 +53,7 @@ TTreeReaderArray<int> parentIndices(tree_reader, "_MCParticles_parents.index");
   TH1D* partElecMomAll = new TH1D("partElecMomAll", "P of Thrown Electron Particles (truth); P", 50, 0, 30);
   TH1D* partKaonMomAll = new TH1D("partKaonMomAll", "P of Thrown Kaon Particles (truth); P", 50, 0, 30);
   TH1D* partPionMomAll = new TH1D("partPionMomAll", "P of Thrown Pion Particles (truth); P", 50, 0, 30);
-  TH1D* partMuonMomAll = new TH1D("partMuonMomAll", "P of Thrown Muon Particles (truth); P", 50, 0, 30);
+  TH1D* partMuonMomAll = new TH1D("partMuonMomAll", "P of Thrown Muon Particles (truth); P", 50, 0, 20);
 
   //Histograms for particles which are daughters
   TH1D* partElecMomDaughter = new TH1D("partElecMomDaughter", "Electrons which have a different Parent; P", 20, 0, 30);
@@ -109,9 +92,9 @@ TTreeReaderArray<int> parentIndices(tree_reader, "_MCParticles_parents.index");
   TH1D* matchedPartElecAll = new TH1D("matchedPartElec", "P of Thrown Electron Particles (matched); P", 50, 0, 30);
   TH1D* matchedPartKaonAll = new TH1D("matchedPartKaon", "P of Thrown Kaon Particles (matched); P", 50, 0, 30);
   TH1D* matchedPartPionAll = new TH1D("matchedPartPion", "P of Thrown Pion Particles (matched); P", 50, 0, 30);
-  TH1D* matchedPartMuonAll = new TH1D("matchedPartMuon", "P of Thrown Muon Particles (matched); P", 50, 0, 30);
+  TH1D* matchedPartMuonAll = new TH1D("matchedPartMuon", "P of Thrown Muon Particles (matched); P", 50, 0, 20);
   
-  // Define some histograms for our efficiencies
+  // Define histograms for efficiencies
   TH1D *TrackEff_Eta = new TH1D("TrackEff_Eta", "Tracking efficiency as fn of #eta; #eta; Eff(%)", 120, -10, 10); 
   TrackEff_Eta->GetXaxis()->SetRangeUser(-3, 3);
   TH1D *TrackEff_Mom = new TH1D("TrackEff_Mom", "Tracking efficiency as fn of P; P(GeV/c); Eff(%)", 100, 0, 100); 
@@ -121,7 +104,7 @@ TTreeReaderArray<int> parentIndices(tree_reader, "_MCParticles_parents.index");
   TH1D *TrackEff_Elec_All = new TH1D("TrackEff_Elec_All", "Tracking efficiency for all Electrons as fn of P; P(GeV/c); Eff(%)", 50, 0, 30);
   TH1D *TrackEff_Kaon_All = new TH1D("TrackEff_Kaon_All", "Tracking efficiency for all Kaons as fn of P; P(GeV/c); Eff(%)", 50, 0, 30);
   TH1D *TrackEff_Pion_All = new TH1D("TrackEff_Pion_All", "Tracking efficiency for all Pions as fn of P; P(GeV/c); Eff(%)", 50, 0, 30);
-  TH1D *TrackEff_Muon_All = new TH1D("TrackEff_Muon_All", "Tracking efficiency for all Muons as fn of P; P(GeV/c); Eff(%)", 50, 0, 30);
+  TH1D *TrackEff_Muon_All = new TH1D("TrackEff_Muon_All", "Tracking efficiency for all Muons as fn of P; P(GeV/c); Eff(%)", 50, 0, 20);
 
 
   TH1D *TrackEff_Elec_daughter = new TH1D("TrackEff_Elec_daughter", "Tracking efficiency for daughter Electrons as fn of P; P(GeV/c); Eff(%)", 20, 0, 30);
@@ -166,7 +149,6 @@ TTreeReaderArray<int> parentIndices(tree_reader, "_MCParticles_parents.index");
   while(tree_reader.Next()) { // Loop over events
     int numberOfParticleForEvent = 0;
     for(unsigned int i=0; i<partGenStat.GetSize(); i++) // Loop over all MC particles
-    //for (unsigned int i=0; i<10; i++)
       {
         
 	if(partGenStat[i] == 1) // Select stable thrown particles
@@ -320,7 +302,7 @@ TTreeReaderArray<int> parentIndices(tree_reader, "_MCParticles_parents.index");
 		// Loop over associations to find matching ReconstructedChargedParticle
 		for(unsigned int j=0; j<simuAssoc.GetSize(); j++)
 		  {
-		    if(simuAssoc[j] == i and weightAssoc[j] > 0.5) // Find association index matching the index of the thrown particle we are looking at
+		    if(simuAssoc[j] == i and weightAssoc[j] > 0.01) // Find association index matching the index of the thrown particle we are looking at
 		      { //Loop over the whole simu assoc to see if any of the entries is equal to the MC partilce
 			TVector3 recMom(trackMomX[recoAssoc[j]],trackMomY[recoAssoc[j]],trackMomZ[recoAssoc[j]]); // recoAssoc[j] is the index of the matched ReconstructedChargedParticle
 

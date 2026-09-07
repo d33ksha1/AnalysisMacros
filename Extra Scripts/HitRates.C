@@ -1,3 +1,5 @@
+//Rate of the number of hits 
+
 #include <podio/ObjectID.h>
 #include <podio/ROOTReader.h>
 #include <podio/Frame.h>

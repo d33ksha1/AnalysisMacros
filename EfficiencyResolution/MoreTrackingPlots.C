@@ -1,8 +1,11 @@
+//Creates plots in the eta-bin of {-3.5, -1, 1, 3.5} across the range of PT for all reconstructed, truth-matched charged particles
+//Plot saved as pdf 
 #include <TEfficiency.h>
 #include <TCanvas.h>
 #include <TLegend.h>
 #include <TMath.h>
 
+#include <string>
 #include <array>
 #include <cmath>
 #include <vector>
@@ -20,17 +23,10 @@
 #include <edm4eic/ReconstructedParticleCollection.h>
 #include <edm4eic/MCRecoParticleAssociationCollection.h>
 
-//std::string input_file = "/data/cryoedm/users/pant/copper_eic_hybrid/epic/FinalSimBenchmark/MuonsFullCraterlake.edm4eic.root";
-std::string input_file = "root://hpceph-xrootd.twgrid.org:1094//cephfs/epic//RECO/26.07.0/epic_craterlake/DIS/NC/10x100/minQ2=10/pythia8NCDIS_10x100_minQ2=10_beamEffects_xAngle=-0.025_hiDiv_5.07*.eicrecon.edm4eic.root";
-//std::string input_file = "/data/cryoedm/users/pant/copper_eic_hybrid/epic/FinalSimBenchmark/MuonsFullCraterlakeCutGDMLMuon25GeV.edm4eic.root";
 
-void MoreTrackingPlots(){
+TString sim_path = "root://hpceph-xrootd.twgrid.org:1094//cephfs/epic//RECO/26.07.0/epic_craterlake/DIS/NC/10x100/minQ2=10/pythia8NCDIS_10x100_minQ2=10_beamEffects_xAngle=-0.025_hiDiv_5.07*.eicrecon.edm4eic.root";
 
-        // Set output file for the histograms
-    //TFile *ofile = TFile::Open("DeadCellCopper/TrackEfficiencyEPCollisions.root","RECREATE");
-
-    // Analysis code will go here
-    // Set up input file chain
+void MoreTrackingPlots(TString input_file = sim_path){
     podio::ROOTReader r;
 	r.openFile(input_file);
     auto nevents = r.getEntries(podio::Category::Event);
