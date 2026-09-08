@@ -8,5 +8,5 @@ Before running a script, use the following command to make the file executable:
 
 **chmod +x /path/to/file.C**
 
-All analysis scripts should be within the shell.
+All analysis scripts should be executed within the eic shell.
 
